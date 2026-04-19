@@ -227,11 +227,16 @@ async function callAIAPI(type, input) {
         const data = await response.json();
         console.log('API返回数据:', data);
         
-        if (data.choices && data.choices.length > 0 && data.choices[0].message) {
-            return data.choices[0].message.content;
-        } else {
-            throw new Error('API返回数据格式不正确');
+        // 尝试不同的返回格式
+        if (data.choices && data.choices.length > 0) {
+            if (data.choices[0].message && data.choices[0].message.content) {
+                return data.choices[0].message.content;
+            } else if (data.choices[0].text) {
+                return data.choices[0].text;
+            }
         }
+        
+        throw new Error('API返回数据格式不正确');
     } catch (error) {
         console.error('API调用详细错误:', error);
         throw error;
