@@ -19,8 +19,8 @@ function getAPIKey() {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('ZHIPUAI_API_KEY')) {
         return localStorage.getItem('ZHIPUAI_API_KEY');
     }
-    // 默认值
-    return 'your-api-key';
+    // 默认值 - 使用用户提供的API Key
+    return '33901d235d1341bc85f4d8c3ea338848.EpUZsbPOj48ZQRv2';
 }
 
 // 导出配置

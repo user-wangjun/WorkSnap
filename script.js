@@ -67,17 +67,32 @@ async function generateWeeklyReport() {
 async function generateArticle() {
     const input = document.getElementById('article-input').value;
     const outputDiv = document.getElementById('article-output');
-    
+
     if (!input.trim()) {
         outputDiv.textContent = '请输入文章相关信息';
         return;
     }
-    
+
     outputDiv.textContent = '正在生成...';
-    
+
     try {
         const result = await callAI('article', input);
         outputDiv.textContent = result;
+        
+        // 添加下载按钮
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = '📥 下载DOCX';
+        downloadBtn.className = 'generate-btn';
+        downloadBtn.style.marginTop = '10px';
+        downloadBtn.onclick = () => downloadDocx('文章', result, 'article');
+        
+        // 清除之前的下载按钮
+        const oldBtn = outputDiv.nextElementSibling;
+        if (oldBtn && oldBtn.textContent.includes('下载DOCX')) {
+            oldBtn.remove();
+        }
+        
+        outputDiv.parentNode.insertBefore(downloadBtn, outputDiv.nextSibling);
     } catch (error) {
         outputDiv.textContent = '生成失败，请重试';
         console.error('生成文章失败:', error);
@@ -88,17 +103,32 @@ async function generateArticle() {
 async function generateMeetingNotes() {
     const input = document.getElementById('meeting-input').value;
     const outputDiv = document.getElementById('meeting-output');
-    
+
     if (!input.trim()) {
         outputDiv.textContent = '请输入会议记录';
         return;
     }
-    
+
     outputDiv.textContent = '正在生成...';
-    
+
     try {
         const result = await callAI('meeting', input);
         outputDiv.textContent = result;
+        
+        // 添加下载按钮
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = '📥 下载DOCX';
+        downloadBtn.className = 'generate-btn';
+        downloadBtn.style.marginTop = '10px';
+        downloadBtn.onclick = () => downloadDocx('会议纪要', result, 'meeting');
+        
+        // 清除之前的下载按钮
+        const oldBtn = outputDiv.nextElementSibling;
+        if (oldBtn && oldBtn.textContent.includes('下载DOCX')) {
+            oldBtn.remove();
+        }
+        
+        outputDiv.parentNode.insertBefore(downloadBtn, outputDiv.nextSibling);
     } catch (error) {
         outputDiv.textContent = '生成失败，请重试';
         console.error('生成会议纪要失败:', error);
@@ -159,6 +189,113 @@ async function callAIAPI(type, input) {
     
     const data = await response.json();
     return data.choices[0].message.content;
+}
+
+// 下载DOCX文件函数
+async function downloadDocx(title, content, type) {
+    // 解析内容为段落
+    const lines = content.split('\n');
+    const paragraphs = [];
+    
+    // 标题
+    paragraphs.push(new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: title,
+                bold: true,
+                size: 32,
+                color: "000000"
+            })
+        ],
+        alignment: docx.AlignmentType.CENTER,
+        spacing: {
+            after: 300
+        }
+    }));
+    
+    let currentParagraph = [];
+    
+    for (const line of lines) {
+        const trimmedLine = line.trim();
+        
+        if (trimmedLine === '') {
+            if (currentParagraph.length > 0) {
+                paragraphs.push(new docx.Paragraph({
+                    children: currentParagraph
+                }));
+                currentParagraph = [];
+            }
+            continue;
+        }
+        
+        // 处理标题行
+        if (trimmedLine.endsWith('：') || trimmedLine.endsWith(':')) {
+            if (currentParagraph.length > 0) {
+                paragraphs.push(new docx.Paragraph({
+                    children: currentParagraph
+                }));
+                currentParagraph = [];
+            }
+            
+            paragraphs.push(new docx.Paragraph({
+                children: [
+                    new docx.TextRun({
+                        text: trimmedLine,
+                        bold: true,
+                        size: 20
+                    })
+                ],
+                spacing: {
+                    before: 200,
+                    after: 100
+                }
+            }));
+        } 
+        // 处理列表项
+        else if (trimmedLine.startsWith('· ')) {
+            paragraphs.push(new docx.Paragraph({
+                children: [
+                    new docx.TextRun({
+                        text: trimmedLine.substring(2),
+                        size: 18
+                    })
+                ],
+                bullet: { level: 0 }
+            }));
+        } 
+        // 处理普通文本
+        else {
+            currentParagraph.push(new docx.TextRun({
+                text: trimmedLine,
+                size: 18,
+                break: currentParagraph.length > 0 ? docx.BreakType.LINE : undefined
+            }));
+        }
+    }
+    
+    if (currentParagraph.length > 0) {
+        paragraphs.push(new docx.Paragraph({
+            children: currentParagraph
+        }));
+    }
+    
+    // 创建文档
+    const doc = new docx.Document({
+        sections: [{
+            properties: {},
+            children: paragraphs
+        }]
+    });
+    
+    // 生成并下载文件
+    const buffer = await docx.Packer.toBuffer(doc);
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${title}_${new Date().toISOString().slice(0, 10)}.docx`;
+    a.click();
+    URL.revokeObjectURL(url);
 }
 
 // 模拟数据生成函数
