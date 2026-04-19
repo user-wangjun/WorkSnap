@@ -31,17 +31,32 @@ document.addEventListener('DOMContentLoaded', function() {
 async function generateWeeklyReport() {
     const input = document.getElementById('weekly-input').value;
     const outputDiv = document.getElementById('weekly-output');
-    
+
     if (!input.trim()) {
         outputDiv.textContent = '请输入工作内容';
         return;
     }
-    
+
     outputDiv.textContent = '正在生成...';
-    
+
     try {
         const result = await callAI('weekly', input);
         outputDiv.textContent = result;
+        
+        // 添加下载按钮
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = '📥 下载DOCX';
+        downloadBtn.className = 'generate-btn';
+        downloadBtn.style.marginTop = '10px';
+        downloadBtn.onclick = () => downloadDocx('周报', result, 'weekly');
+        
+        // 清除之前的下载按钮
+        const oldBtn = outputDiv.nextElementSibling;
+        if (oldBtn && oldBtn.textContent.includes('下载DOCX')) {
+            oldBtn.remove();
+        }
+        
+        outputDiv.parentNode.insertBefore(downloadBtn, outputDiv.nextSibling);
     } catch (error) {
         outputDiv.textContent = '生成失败，请重试';
         console.error('生成周报失败:', error);
