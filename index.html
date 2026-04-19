@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职秒 | JobMoment - AI职场助手</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>职秒 | JobMoment</h1>
+            <p>AI驱动的个人知识工作流引擎</p>
+        </header>
+        
+        <main>
+            <aside class="sidebar">
+                <nav>
+                    <ul>
+                        <li><button class="nav-btn active" data-tab="weekly-report">周报生成</button></li>
+                        <li><button class="nav-btn" data-tab="article-writing">文章写作</button></li>
+                        <li><button class="nav-btn" data-tab="meeting-notes">会议纪要</button></li>
+                    </ul>
+                </nav>
+            </aside>
+            
+            <section class="main-content">
+                <!-- 周报生成模块 -->
+                <div id="weekly-report" class="tab-content active">
+                    <h2>AI周报生成器</h2>
+                    <div class="input-section">
+                        <textarea id="weekly-input" placeholder="请输入本周工作内容、下周计划等信息..."></textarea>
+                    </div>
+                    <button id="generate-weekly" class="generate-btn">✨ AI生成</button>
+                    <div class="output-section">
+                        <h3>生成结果</h3>
+                        <div id="weekly-output" class="output-content"></div>
+                    </div>
+                </div>
+                
+                <!-- 文章写作模块 -->
+                <div id="article-writing" class="tab-content">
+                    <h2>公众号文章辅助写作</h2>
+                    <div class="input-section">
+                        <textarea id="article-input" placeholder="请输入文章主题、基本信息、嘉宾、赞助商等..."></textarea>
+                    </div>
+                    <button id="generate-article" class="generate-btn">✨ AI生成</button>
+                    <div class="output-section">
+                        <h3>生成结果</h3>
+                        <div id="article-output" class="output-content"></div>
+                    </div>
+                </div>
+                
+                <!-- 会议纪要模块 -->
+                <div id="meeting-notes" class="tab-content">
+                    <h2>会议纪要智能整理</h2>
+                    <div class="input-section">
+                        <textarea id="meeting-input" placeholder="请粘贴会议记录或语音转文字内容..."></textarea>
+                    </div>
+                    <button id="generate-meeting" class="generate-btn">✨ AI生成</button>
+                    <div class="output-section">
+                        <h3>生成结果</h3>
+                        <div id="meeting-output" class="output-content"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© 2026 职秒 JobMoment - AI职场助手</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
