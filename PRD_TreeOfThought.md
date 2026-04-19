@@ -246,7 +246,7 @@
   - 部署简单，便于演示
   
 #### 1.2 AI模型
-- **模型选择**：智谱AI GLM-4-Flash
+- **模型选择**：智谱AI GLM-4.7-Flash
 - **选择理由**
   - 免费额度充足
   - 中文能力强
@@ -272,7 +272,7 @@
 │    - 输入/输出格式处理                         │
 ├─────────────────────────────────────────────┤
 │              AI能力层                          │
-│    智谱AI GLM-4-Flash API                     │
+│    智谱AI GLM-4.7-Flash API                   │
 └─────────────────────────────────────────────┘
 ```
 
@@ -308,7 +308,7 @@
 ```javascript
 async function callAIAPI(type, input) {
     const apiKey = window.config?.apiKey || 'your-api-key';
-    const model = window.config?.model || 'glm-4-flash';
+    const model = window.config?.model || 'glm-4.7-flash';
     
     let systemPrompt = '';
     switch (type) {

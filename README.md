@@ -72,7 +72,7 @@
 │    - 输入/输出格式处理                         │
 ├─────────────────────────────────────────────┤
 │              AI能力层                          │
-│    智谱AI GLM-4-Flash API                     │
+│    智谱AI GLM-4.7-Flash API                   │
 │    (免费额度足够开发和演示)                      │
 └─────────────────────────────────────────────┘
 ```
@@ -82,7 +82,7 @@
 |------|------|------|
 | **前端** | HTML + CSS + Vanilla JS | 简洁为主，不需要重型框架 |
 | **后端/逻辑** | 纯前端方案 | 直接在浏览器中调用API |
-| **AI模型** | 智谱GLM-4-Flash | 免费、中文能力强、速度快 |
+| **AI模型** | 智谱GLM-4.7-Flash | 免费、中文能力强、速度快 |
 | **部署方式** | 本地运行 / GitHub Pages / Vercel | 演示方便即可 |
 
 ## 快速开始
@@ -144,7 +144,7 @@ python3 -m http.server 8000
 // 实际API调用函数
 async function callAIAPI(type, input) {
     const apiKey = window.config?.apiKey || 'your-api-key';
-    const model = window.config?.model || 'glm-4-flash';
+    const model = window.config?.model || 'glm-4.7-flash';
     const apiEndpoint = window.config?.apiEndpoint || 'https://open.bigmodel.cn/api/m/v1/chat/completions';
     
     // 根据类型构建不同的prompt

@@ -106,7 +106,7 @@ async function callAI(type, input) {
 async function callAIAPI(type, input) {
     // 获取配置
     const apiKey = window.config?.apiKey || 'your-api-key';
-    const model = window.config?.model || 'glm-4-flash';
+    const model = window.config?.model || 'glm-4.7-flash';
     const apiEndpoint = window.config?.apiEndpoint || 'https://open.bigmodel.cn/api/m/v1/chat/completions';
     
     // 根据类型构建不同的prompt

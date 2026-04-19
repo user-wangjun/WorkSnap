@@ -6,7 +6,7 @@ const config = {
     // API端点
     apiEndpoint: 'https://open.bigmodel.cn/api/m/v1/chat/completions',
     // 模型名称
-    model: 'glm-4-flash'
+    model: 'glm-4.7-flash'
 };
 
 // 获取API Key的函数
